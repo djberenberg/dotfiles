@@ -16,7 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin) Plugin 'file:///home/gmarik/path/to/plugin'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -24,32 +25,38 @@ Plugin 'VundleVim/Vundle.vim'
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
 "Plugin 'rip-rip/clang_complete'
-Plugin 'def-lkb/ocp-indent-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-fugitive'
-Plugin 'wincent/command-t'
+Plugin 'tpope/vim-abolish'
+
+"Plugin 'SirVer/ultisnips'     " the snippets engine
+"Plugin 'honza/vim-snippets'   " the snippets themselves
+"Plugin 'wincent/command-t'
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
+"Plugin 'integralist/vim-mypy'
+ 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-vmap \ U
-let mapleader = 'g'
-let maplocalleader = 'f'
+if has('win32') || has ('win64')
+    let $VIMHOME = $VIM."/vimfiles"
+else
+    let $VIMHOME = $HOME."/.vim"
+endif
+
+
+"let g:UltiSnipsExpandTrigger= "<c-q>"
+"let g:UltiSnipsJumpForwardTrigger = "<c-f>"
+"let g:UltiSnipsJumpBackwardTrigger= "<c-b>"
+
+"let g:UltiSnipsEditSplit
+
+" ####### mapping
+nmap \ U
+let mapleader = 'a'
+
 "open vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr> 
 "source vimrc
@@ -57,51 +64,90 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 "string macro
 nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
 
-iabbrev improt import
 
+
+
+if has("gui_running")
+    function UpTransparency()
+        set transparency+=5
+    endfunction
+"    
+    function DwnTransparency()
+        set transparency-=5
+    endfunction
+"
+    set transparency=8
+    nnoremap <leader><leader>s :call UpTransparency()<cr>
+    nnoremap <leader><leader>d :call DwnTransparency()<cr>
+endif
+
+"          *--- name of mapping  *----- generate a terminal
+"          |                     |
+" ------ ----            ------------           ----------- quit
+nnoremap term :vsplit<cr>:term zsh<cr><c-w><c-j>:q<cr>
+"             -----------             ---------   
+"               |                         |
+"               |                         *---------- switch panes, jump down to split 
+"               *--- vsplit a new pane on this buffer,
 "add a comment
-autocmd FileType python :nnoremap <localleader>c I#<esc>
+
+" what if there was a plugin for auto-replacing Delta with Δ etc
+iabbrev $CHECK$      ✓
+iabbrev $DELTA$      𝚫
+iabbrev $IMP$        ⇒
+iabbrev $MAPS$       → 
+
+augroup filetype_python
+    autocmd!
+    autocmd FileType python :let maplocalleader = 'f'
+    autocmd FileType python :nnoremap <localleader>c I#<esc>
+    autocmd FileType python :iabbrev improt             import
+    autocmd FileType python :iabbrev importy            import
+    autocmd FileType python :iabbrev impot              import
+    "autocmd FileType python :Abolish {,import}{,numpy}  {} {} as np 
+    "autocmd FileType python :Abolish {,import}{,pandas} {} {} as pd 
+    "autocmd FileType python :Abolish {,if}{__name__}    {} {} == '__main__':
+augroup END
 
 colorscheme slate
 syntax on
+set nu
 highlight Pmenu guibg=IndianRed guifg=Grey
 highlight PmenuSel guibg=Grey guifg=IndianRed
-" change line colors and stuff
 
-set tabstop=4
-set shiftwidth=4
-set expandtab
-
-" quiet down syntastic
-let g:ycm_global_ycm_extra_conf = $HOME.'/.ycm_config.py'
+" #### syntastic/YCM messages ###
 let g:syntastic_quiet_messages = {'level' : 'warnings'}
 let g:syntastic_python_checkers=['flake8']
-
 let g:syntastic_python_flake8_args='--ignore=E501,E225,F401,E221,E262,E265,E702,E201,E231,E202,E226,E241,E303,E401,E302,E127,E305,E402,E266,E261,E203,E222,F841,E731'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_config.py'
+let g:ycm_python_binary_path = 'python'
 
-" deletes the dropdown window
+" ### this would remove the menu if you tabbed out of it in YCM ###
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible()==0|pclose|endif
+highlight Pmenu ctermbg=DarkGrey ctermfg=Cyan
 
-set nu
 
-match ErrorMsg '\%>90v.\+' " highlight that which exceeds 90 characters in a row
-" highlight CursorLine cterm=bold
-" hi CursorLineNr guifg=IndianRed guibg=Grey
-" highlight LineNr guifg=Grey guibg=IndianRed
-" highlight Normal ctermfg=Grey
-set cursorline
-hi cursorline cterm=bold term=bold
-
-highlight CursorLine guibg=Black ctermbg=139
-highlight LineNr guibg=DarkSlateGrey guifg=Grey
-highlight CursorLineNr guibg=DarkSlateGrey guifg=IndianRed ctermfg=171
-
-" no more swap files
+" ### no more swap files ###
 "set nobackup
 "set nowritebackup
 "set noswapfile
+
+" ### highlight anything after the 90th column ###
+match ErrorMsg '\%>90v.\+' 
+
+" ### highlight the line the cursor is on and update the line number colors ###
+set cursorline
+hi cursorline cterm=bold term=bold
+highlight CursorLine guibg=Grey20 ctermbg=139
+highlight LineNr guibg=DarkSlateGrey guifg=Grey
+highlight CursorLineNr guibg=DarkSlateGrey guifg=IndianRed ctermfg=171
+
 set ttymouse=xterm2
+
+set tabstop=4 
+set shiftwidth=4
+set expandtab
 
 " color index
 " hi x016_Grey0 ctermfg=16 guifg=#000000 "rgb=0,0,0
