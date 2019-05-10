@@ -93,6 +93,7 @@ nnoremap term :vsplit<cr>:term zsh<cr><c-w><c-j>:q<cr>
 
 " what if there was a plugin for auto-replacing Delta with Δ etc
 iabbrev $CHECK$      ✓
+iabbrev $XMARK$      ✗
 iabbrev $DELTA$      𝚫
 iabbrev $IMP$        ⇒
 iabbrev $MAPS$       → 
