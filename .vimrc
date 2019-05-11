@@ -1,4 +1,4 @@
-set nocompatible              " be iMproved, required
+
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -65,8 +65,17 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
 
 
+function GetTotalWidth()
+    let Width = 0
+    for i in range(len(getbufinfo({'buflisted':1})))
+        let Width += winwidth(i)
+    endfor
 
+    return Width
+endfunction
 
+nnoremap IDE :Vex .<cr>:term<cr><c-w>r<c-w><right><c-w>=<cr>:exe "vertical resize " . (winwidth(0) * 8/5)<cr>
+"vertica resie (0.75 * GetTotalWidth())<cr>
 if has("gui_running")
     function UpTransparency()
         set transparency+=5

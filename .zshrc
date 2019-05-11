@@ -1,10 +1,11 @@
-source $HOME/.rvm/scripts/rvm
+
 
 export PATH=$HOME/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/usr/local/Cellar:"$PATH"
 export PATH=/Library/TeX/texbin:/opt/X11/bin:"$PATH"
 export PATH=/usr/local/opt/ruby/bin:"$PATH"
-export PATH=$HOME/.rvm/bin:"$PATH"
-
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH=$HOME/.rvm/gems/ruby-2.6.0/bin:$HOME/.rvm/bin:"$PATH"
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -12,7 +13,7 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME='norm'
+ZSH_THEME='dogenpunk'
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -119,3 +120,5 @@ fi
 unset __conda_setup
 # <<< conda init <<<
 
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
