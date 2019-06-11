@@ -75,7 +75,34 @@ function GetTotalWidth()
     return Width
 endfunction
 
+" an unholy mascro to IDE-ify vim
 nnoremap IDE :Vex .<cr>:term<cr><c-w>r<c-w><right><c-w>=<cr>:exe "vertical resize " . (winwidth(0) * 8/5)<cr>
+
+
+function VRsz(sz)
+    :exe "vertical resize " . a:sz
+endfunction
+
+function! s:load_skeleton(type)
+    " do nothing if no ft
+    if empty(a:type) | return | endif
+    
+    let skeleton = $VIMHOME . '/templates/' . a:type
+    
+    if empty(glob(skeleton)) | return | endif
+
+    " read last skeleton into 1st line
+    exe '0read ' . skeleton
+endfunction
+
+augroup aug_skeleton
+    au!
+    "BufNewFile event is triggered when your edit a new file
+    autocmd BufNewFile * call s:load_skeleton(&filetype)
+augroup end
+
+command! -nargs=1 Rsz :call VRsz(<q-args>)
+
 "vertica resie (0.75 * GetTotalWidth())<cr>
 if has("gui_running")
     function UpTransparency()
