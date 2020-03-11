@@ -25,18 +25,11 @@ Plugin 'VundleVim/Vundle.vim'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
-"Plugin 'rip-rip/clang_complete'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-abolish'
 
-"Plugin 'SirVer/ultisnips'     " the snippets engine
-"Plugin 'honza/vim-snippets'   " the snippets themselves
-"Plugin 'wincent/command-t'
-Plugin 'Valloric/YouCompleteMe'
-"Plugin 'integralist/vim-mypy'
- 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -47,13 +40,6 @@ else
     let $VIMHOME = $HOME."/.vim"
 endif
 
-
-"let g:UltiSnipsExpandTrigger= "<c-q>"
-"let g:UltiSnipsJumpForwardTrigger = "<c-f>"
-"let g:UltiSnipsJumpBackwardTrigger= "<c-b>"
-
-"let g:UltiSnipsEditSplit
-
 " ####### mapping
 nmap \ U
 let mapleader = 'a'
@@ -62,6 +48,11 @@ let mapleader = 'a'
 nnoremap <leader>ev :vsplit $MYVIMRC<cr> 
 "source vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+"jump up/down
+nnoremap <leader>u 10k
+nnoremap <leader>d 10j
+
 "string macro
 nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
 
@@ -126,7 +117,6 @@ nnoremap term :vsplit<cr>:term zsh<cr><c-w><c-j>:q<cr>
 "               |                         |
 "               |                         *---------- switch panes, jump down to split 
 "               *--- vsplit a new pane on this buffer,
-"add a comment
 
 " what if there was a plugin for auto-replacing Delta with Δ etc
 iabbrev $CHECK$      ✓
@@ -147,9 +137,19 @@ augroup filetype_python
     "autocmd FileType python :Abolish {,if}{__name__}    {} {} == '__main__':
 augroup END
 
-colorscheme slate
-syntax on
-set nu
+
+function! s:load_skeleton(type)
+    if empty(a:type) | return | endif
+    let skeleton = $VIMHOME . '/templates/' . a:type
+    if empty(glob(skeleton)) | return | endif
+    exe '0read ' . skeleton
+endfunction
+
+augroup aug_skeleton
+    au!
+    autocmd BufNewFile * call s:load_skeleton(&filetype)
+augroup end
+
 highlight Pmenu guibg=IndianRed guifg=Grey
 highlight PmenuSel guibg=Grey guifg=IndianRed
 
@@ -165,19 +165,16 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible()==0|pclose|endif
 highlight Pmenu ctermbg=DarkGrey ctermfg=Cyan
 
-
-" ### no more swap files ###
-"set nobackup
-"set nowritebackup
-"set noswapfile
-
 " ### highlight anything after the 90th column ###
-match ErrorMsg '\%>90v.\+' 
+"match ErrorMsg '\%>90v.\+' 
+
+colorscheme zenburn
+syntax on
+set nu
 
 " ### highlight the line the cursor is on and update the line number colors ###
 set cursorline
-hi cursorline cterm=bold term=bold
-highlight CursorLine guibg=Grey20 ctermbg=139
+
 highlight LineNr guibg=DarkSlateGrey guifg=Grey
 highlight CursorLineNr guibg=DarkSlateGrey guifg=IndianRed ctermfg=171
 
