@@ -124,6 +124,11 @@ iabbrev $XMARK$      ✗
 iabbrev $DELTA$      𝚫
 iabbrev $IMP$        ⇒
 iabbrev $MAPS$       → 
+iabbrev $ALPHA$      𝛼
+iabbrev $BETA$       𝛽
+iabbrev $PHI$        𝜙
+iabbrev $THETA$      θ
+iabbrev $OMEGA$      ω
 
 augroup filetype_python
     autocmd!
@@ -169,6 +174,7 @@ highlight Pmenu ctermbg=DarkGrey ctermfg=Cyan
 "match ErrorMsg '\%>90v.\+' 
 
 colorscheme zenburn
+
 syntax on
 set nu
 
