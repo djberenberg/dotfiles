@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+if [ -d Zenburn ]; then
+    rm -rf Zenburn
+fi
+
+if [ -d ~/.vim/ ]; then
+    rm -rf ~/.vim/
+fi
+
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+cp .vimrc ~/
+git clone https://github.com/jnurmine/Zenburn
+cp -r Zenburn/colors ~/.vim/
+cp -r vim/templates ~/.vim/   
+
+if [ "${SHELL}" == "/bin/zsh" ]; then
+	cp .zshrc ~/
+    RC=~/.zshrc
+else
+	cp .bashrc ~/
+    RC=~/.bashrc
+fi
+
+vim +PluginInstall +qall
+source ${RC}
+
+
+

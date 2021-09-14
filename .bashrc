@@ -1,6 +1,6 @@
 . /etc/bashrc  #include /etc/bashrc
 
-export PATH="~/.node_allocation:{$PATH}"
+export PATH="~/node_allocation:{$PATH}"
 export CEPH=/mnt/ceph/users/dberenberg/
 
 alias m='vim'
@@ -15,7 +15,6 @@ alias sq=squeue
 alias eschew=squeue
 
 export POPKEY=/mnt/home/dberenberg/.ssh/sdsckp
-export PERL5LIB=~/lib/perl5/lib/site_perl/5.26.1
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -43,4 +42,4 @@ function host() {
     fi
     echo $hn
 }
-PS1="[\u@$(host) \[\e[41m\]\W\[\e[m\]]\\$ "
+export PS1="[\u@$(host) \[\e[41m\]\W\[\e[m\]]\\$ "
