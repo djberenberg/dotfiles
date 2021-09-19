@@ -23,7 +23,7 @@ else
 fi
 
 vim +PluginInstall +qall
+set -ex
 source ${RC}
-
 
 

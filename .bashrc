@@ -1,45 +1,15 @@
-. /etc/bashrc  #include /etc/bashrc
+#!/usr/bin/env bash
 
-export PATH="~/node_allocation:{$PATH}"
-export CEPH=/mnt/ceph/users/dberenberg/
+alias m="vim"
+alias ls="ls --color=auto" 
 
-alias m='vim'
-
-# expanding brain meme
-alias seeque=squeue
-alias squeeu=squeue
-alias sequeu=squeue
-alias sqeeue=squeue
-
-alias sq=squeue
-alias eschew=squeue
-
-export POPKEY=/mnt/home/dberenberg/.ssh/sdsckp
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/mnt/home/dberenberg/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/mnt/home/dberenberg/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/mnt/home/dberenberg/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/mnt/home/dberenberg/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-export TERM=xterm-256color
-
-function host() {
-    hn="\[\e[3m\]$HOSTNAME\[\e[m\]"
-    if [[ "${HOSTNAME}" != "rusty1" && "${HOSTNAME}" != "rusty2" ]]; then
-        hn="\[\e[38;5;161m\]${hn}\[\e[m\]"
-    else
-        hn="\[\e[38;5;172m\]${hn}\[\e[m\]"
-    fi
-    echo $hn
-}
-export PS1="[\u@$(host) \[\e[41m\]\W\[\e[m\]]\\$ "
+##function host() {
+#    hn="\[\e[3m\]$HOSTNAME\[\e[m\]"
+#    if [[ "${HOSTNAME}" != "rusty1" && "${HOSTNAME}" != "rusty2" ]]; then
+#        hn="\[\e[38;5;161m\]${hn}\[\e[m\]"
+#    else
+#        hn="\[\e[38;5;172m\]${hn}\[\e[m\]"
+#    fi
+#    echo $hn
+#}
+export PS1="\[\e[32m\][\[\e[m\]\[\e[31m\]\u\[\e[m\]\[\e[33m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]:\[\e[36m\]\w\[\e[m\]\[\e[32m\]]\[\e[m\]\[\e[32;47m\]\\$\[\e[m\] "
